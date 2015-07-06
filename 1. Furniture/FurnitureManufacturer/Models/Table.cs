@@ -25,7 +25,7 @@ namespace FurnitureManufacturer.Models
 
             result.Append(base.ToString() + string.Format("Length: {0}, Width: {1}, Area: {2}",
                 this.Length, this.Width, this.Area));
-            return result.ToString();
+            return result.ToString().TrimEnd();
         }
     }
 }

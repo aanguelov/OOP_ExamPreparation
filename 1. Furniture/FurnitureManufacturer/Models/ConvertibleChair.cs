@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using FurnitureManufacturer.Interfaces;
 
 namespace FurnitureManufacturer.Models
@@ -31,10 +32,8 @@ namespace FurnitureManufacturer.Models
 
         public override string ToString()
         {
-            var result = new StringBuilder();
             string state = this.IsConverted ? "Converted" : "Normal";
-            result.Append(base.ToString() + string.Format(", State: {0}", state));
-            return result.ToString();
+            return base.ToString() + string.Format(", State: {0}", state);
         }
     }
 }

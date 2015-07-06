@@ -81,11 +81,11 @@ namespace FurnitureManufacturer.Models
                     var current = companyFurniture[i];
                     if (i != companyFurniture.Count() - 1)
                     {
-                        result.AppendLine(companyFurniture[i].ToString());
+                        result.AppendLine(current.ToString());
                     }
                     else
                     {
-                        result.Append(companyFurniture[i]);
+                        result.Append(current);
                     }
                 }
             }
@@ -94,7 +94,7 @@ namespace FurnitureManufacturer.Models
                 result.Append(string.Format("{0} - {1} - {2} {3}", this.Name, this.RegistrationNumber, count, furnitures));
             }
 
-            return result.ToString();
+            return result.ToString().TrimEnd();
         }
 
         public bool CheckIfRegNumberContainsOnlyDigits(string value)

@@ -39,7 +39,6 @@ namespace NightlifeEntertainment
             switch (commandWords[2])
             {
                 case "theatre":
-                    //var theatreVenue = this.GetVenue(commandWords[5]);
                     if (!venue.AllowedTypes.Contains(PerformanceType.Theatre))
                     {
                         throw new ArgumentException("Invalid venue.");
@@ -49,7 +48,6 @@ namespace NightlifeEntertainment
                     this.Performances.Add(theatre);
                     break;
                 case "concert":
-                    //var concertVenue = this.GetVenue(commandWords[5]);
                     if (!venue.AllowedTypes.Contains(PerformanceType.Concert))
                     {
                         throw new ArgumentException("Invalid venue.");
@@ -102,18 +100,18 @@ namespace NightlifeEntertainment
         protected override void ExecuteReportCommand(string[] commandWords)
         {
             var performanceName = commandWords[1];
-            var performance = this.Performances.FirstOrDefault(p => p.Name == performanceName);
-            if (performance == null)
-            {
-                throw new ArgumentNullException("There is no such performance.");
-            }
+            var performance = this.GetPerformance(performanceName);
+            //if (performance == null)
+            //{
+            //    throw new ArgumentNullException("There is no such performance.");
+            //}
             var venue = performance.Venue;
             var startTime = performance.StartTime;
             var soldTickets = performance.Tickets.Where(t => t.Status == TicketStatus.Sold).ToArray();
-            var prices = soldTickets.Select(t => t.Price);
+            decimal sum = soldTickets.Sum(t => t.Price);
 
             this.Output.AppendLine(string.Format("{0}: {1} ticket(s), total: ${2:F2}", 
-                                                    performanceName, soldTickets.Count(), prices.Sum()))
+                                                    performance.Name, soldTickets.Count(), sum))
                        .AppendLine(string.Format("Venue: {0} ({1})", venue.Name, venue.Location))
                        .AppendLine(string.Format("Start time: {0}", startTime));
         }
@@ -137,10 +135,7 @@ namespace NightlifeEntertainment
             this.Output.AppendLine("Performances:");
             if (performances.Any())
             {
-                foreach (var performance in performances)
-                {
-                    this.Output.AppendLine("-" + performance.Name);
-                }
+                this.Output.AppendLine(string.Join(Environment.NewLine, performances.Select(p => "-" + p.Name)));
             }
             else
             {
@@ -161,10 +156,7 @@ namespace NightlifeEntertainment
                         .ThenBy(p => p.Name);
                     if (venueEvents.Any())
                     {
-                        foreach (var performance in venueEvents)
-                        {
-                            this.Output.AppendLine("--" + performance.Name);
-                        }
+                        this.Output.AppendLine(string.Join(Environment.NewLine, venueEvents.Select(v => "--" + v.Name)));
                     }
                 }
             }
